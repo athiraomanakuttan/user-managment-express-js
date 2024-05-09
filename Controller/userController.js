@@ -1,69 +1,81 @@
-const collection = require('../Config/dbConnect')
+const collection = require("../Config/dbConnect");
+const bcrypt = require("bcrypt");
 
-
-// ------------------- Load signup page --------------- 
+// ------------------- Load signup page ---------------
 const signup = (req, res) => {
-    if (req.session.user) {
-      res.redirect("/home");
-    } else {
-      const formData = {}; // Get form data or an empty object if not present
-      res.render("SignupPage", { status: false, error:false , formData });
-    }
-  };
-  
-// ----------------- Add new user ------------------ 
+  if (req.session.user) {
+    res.redirect("/home");
+  } else {
+    const formData = {}; // Get form data or an empty object if not present
+    res.render("SignupPage", { status: false, error: false, formData });
+  }
+};
+
+// ----------------- Add new user ------------------
 const createUser = async (req, res) => {
   const data = {
     name: req.body.userName,
     email: req.body.email,
     password: req.body.password,
   };
-  const validate = validateForm(data)
+  const validate = validateForm(data);
   if (validate.valid) {
-    console.log("validated success");
-    const existingUser = await collection.findOne({email:data.email})
-    
-    if(existingUser)
-        {
-            res.render('SignupPage',{error:"User Already Exists",formData:data,status: false})
-        }
-        else
-        {
-            let userInsert = await collection.insertMany(data)
-            res.redirect('/login')
-        }
+    const existingUser = await collection.findOne({ email: data.email });
+
+    if (existingUser) {
+      res.render("SignupPage", {
+        error: "User Already Exists",
+        formData: data,
+        status: false,
+      });
+    } else {
+      const salt = 10;
+      // ------------------- password hashing usring bcrypt -----------
+      data.password = await bcrypt.hash(data.password, salt);
+      // ---------------- inserting data -----------
+      let userInsert = await collection.insertMany(data);
+      res.redirect("/login");
+    }
   } else {
-    console.log("validated failed");
-    res.render('SIgnupPage',{status: false, error : validate.error ,formData : data})
+    res.render("SIgnupPage", {
+      status: false,
+      error: validate.error,
+      formData: data,
+    });
   }
 };
- 
 
-// -------------- Login page loading ------------ 
+// -------------- Login page loading ------------
 
-const login = async (req,res)=>{
-    res.render('LoginPage',{error:null})
+const login = async (req, res) => {
+  res.render("LoginPage", { error: null });
+};
+const loginUser = async (req, res) => {
+  const data = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+  let existingUser = await collection.findOne({ email: data.email });
+  console.log(existingUser.password);
+  console.log(data.password);
+  const passwordCheck = await bcrypt.compare(
+    data.password,
+    existingUser.password
+  );
+  if (existingUser && passwordCheck) {
+    // create session
+    req.session.user=existingUser.email;
+    res.redirect('/home')
+  } else if (!passwordCheck)
+    res.render("LoginPage", { error: "Incorrect Password" });
+  else res.render("LoginPage", { error: "User Not Exist." });
+};
+
+// ------------------- Load Home page ----------- 
+
+const homePage = (req, res)=>{
+    res.render("home")
 }
-const loginUser = async (req,res)=>{
-    const data ={
-        email:req.body.email,
-        password:req.body.password
-    }
-    let existingUser = await collection.findOne({email: data.email})
-    if(existingUser )
-        {
-            
-        }
-        else
-        {
-            res.render('LoginPage',{error:"User Not Exist."})
-        }
-}
-
-
-
-
-
 
 // -----------------  Form validation ------- -----
 function validateForm(data) {
@@ -89,5 +101,4 @@ function validateForm(data) {
   else return { valid: true };
 }
 
-
-module.exports = { signup, createUser,login, loginUser};
+module.exports = { signup, createUser, login, loginUser,homePage };

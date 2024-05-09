@@ -1,3 +1,4 @@
+const collection = require('../Config/dbConnect')
 const userSessionCheck = (req,res,next)=>{
 if(req.session.user)
 {
@@ -8,15 +9,10 @@ else{
 }
 }
 const userLoginCheck =(req,res,next)=>{
-    console.log("Ok successs middleare")
     if(req.session.user)
-    {
             res.redirect('/home')
-    }
     else
-    {
         next()
-    }
 }
 
 
@@ -39,4 +35,20 @@ const adminLoginCheck =(req,res,next)=>{
         next();
     }
 }
-module.exports={userSessionCheck,userLoginCheck,adminSessionCheck,adminLoginCheck}
+
+const userActive= (req,res,next)=>{
+    if(req.session.user)
+    {
+        const userDetails = collection.findOne({email:req.session.user})
+        if(userDetails)
+            next()
+        else
+        {
+            req.session.destroy();
+            res.redirect('/login')
+        }
+    }
+}
+
+
+module.exports={userSessionCheck,userLoginCheck,adminSessionCheck,adminLoginCheck,userActive}
