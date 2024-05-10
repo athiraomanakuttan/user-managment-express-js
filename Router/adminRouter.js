@@ -5,6 +5,7 @@ const {adminSessionCheck , adminLoginCheck}= require('../Middleware/sessionMiddl
 
 router.get('/login',adminLoginCheck,adminController.login)
 router.post('/login',adminLoginCheck,adminController.adminLogin)
-router.get('/dashbord',adminSessionCheck,adminController.adminDashboard)
+router.get('/dashboard',adminSessionCheck,adminController.adminDashboard)
+router.get('/logout',adminController.logout)
 
 module.exports = router

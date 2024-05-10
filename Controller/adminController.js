@@ -12,7 +12,7 @@ const adminPassword = 'admin@123';
 if(req.body.email === adminEmail && req.body.password === adminPassword)
     {
         req.session.admin=adminEmail;
-        res.redirect('/admin/dashbord')
+        res.redirect('/admin/dashboard')
     }
     else
     {
@@ -24,13 +24,18 @@ const adminDashboard= async (req,res)=>{
     try{
         const serchString = req.query.search || ''
         const serchData = await collection.find({name :{$regex:serchString, $options: 'i'}}) 
-        res.render('adminDashbord',{data : serchData})
+        res.render('adminDashboard',{data : serchData})
     }
     catch(error)
     {
         console.log('Error occured : ' + error)
     }
 }
+const logout =(req,res)=>{
+    req.session.destroy();
+    res.redirect('/admin/login')
 
 
-module.exports= { login, adminLogin, adminDashboard}
+}
+
+module.exports= { login, adminLogin, adminDashboard ,logout}
