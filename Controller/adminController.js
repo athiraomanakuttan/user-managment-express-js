@@ -1,4 +1,6 @@
 const collection = require('../Config/dbConnect')
+const { ObjectId } = require('mongodb');
+const Swal= require('sweetalert2')
 require('dotenv').config({ path: '../Config/config.env' });
 
 
@@ -37,8 +39,18 @@ const logout =(req,res)=>{
 }
 
 // ---------------------- User delete ----------------- 
-const deleteUser =(req,res)=>{
-    console.log(req.params.id)
+const deleteUser = async (req,res)=>{
+    try
+    {
+        const userId = req.params.id;
+         await collection.deleteOne({ _id: new ObjectId(userId) })
+         res.redirect('/admin/dashboard')
+
+    }
+    catch(err){
+        console.log("can't delete user : "+ err)
+    }
+    
 }
 
 module.exports= { login, adminLogin, adminDashboard ,logout,deleteUser}

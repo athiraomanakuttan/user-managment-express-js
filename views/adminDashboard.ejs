@@ -1,44 +1,39 @@
-<%-include('header') %>
+<%- include('header') %>
+
 <div class="dashbord">
   <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
         <h2 class="nametag">Admin</h2>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a href="/admin/logout"
-                ><button type="submit" class="btn btn-danger">Logout</button></a
-              >
+              <a href="/admin/logout"><button type="submit" class="btn btn-danger">Logout</button></a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
   </div>
+
   <div class="search-content m-5">
-    <h2 class="text-light text-center">User Directory </h2>
+    <h2 class="text-light text-center">User Directory</h2>
     <div class="search-div">
-      <form class="form-inline  m-5">
-        <input class="form-control mr-sm-3 " type="search" placeholder="Search" aria-label="Search">
+      <a href="#"  class="btn btn-light text-dark">New User</a>
+      <form class="form-inline m-5">
+        <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
-    <% if(serchString!==''){%> <h6>Search result of <%= serchString%></h6><%}%>
+
+    <% if(serchString !== '') { %>
+    <h6>Search result of <%= serchString %></h6>
+    <% } %>
+
     <table class="table table-striped text-light">
       <thead>
         <tr>
@@ -50,26 +45,51 @@
         </tr>
       </thead>
       <tbody>
-        <% if(data.length){data.forEach((row,index)=>{ const timestamp = new Date(row.created_time);
-        const options = { year: 'numeric', month: 'short', day: '2-digit' };
-        const formattedDate = timestamp.toLocaleDateString('en-US', options);
+        <% if(data.length) { %>
+        <% data.forEach((row, index) => {
+          const timestamp = new Date(row.created_time);
+          const options = { year: 'numeric', month: 'short', day: '2-digit' };
+          const formattedDate = timestamp.toLocaleDateString('en-US', options);
         %>
         <tr>
-          <th scope="row"><%= index+1 %></th>
-          <td><%=row.name %></td>
-          <td><%=row.email %></td>
-          <td><%=formattedDate %></td>
-          <td><ul class="actions">
-            <li><a href="/admin/editUser/<%=row.id %>"><i class='bx bx-edit'></i></a></li>
-            <li><a href="/admin/deleteUser/<%=row.id %>"><i class='bx bxs-trash'></i></a></li>
-          </ul></td>
+          <th scope="row"><%= index + 1 %></th>
+          <td><%= row.name %></td>
+          <td><%= row.email %></td>
+          <td><%= formattedDate %></td>
+          <td>
+            <ul class="actions">
+              <li><a href="/admin/editUser/<%= row.id %>"><i class='bx bx-edit'></i></a></li>
+              <li>
+                <a href="#" onclick="confirmDelete('<%= row.id %>');"><i class='bx bxs-trash'></i></a>
+              </li>
+              
+            </ul>
+          </td>
         </tr>
-        <% }) }
-        else {
-          %> <tr ><td></td><td colspan="5">Sorry ! No active users</td></tr><%
-        }%>
-
+        <% }); %>
+        <% } else { %>
+        <tr>
+          <td></td>
+          <td colspan="5">Sorry! No active users</td>
+        </tr>
+        <% } %>
       </tbody>
     </table>
   </div>
 </div>
+<script>
+  function confirmDelete(userId) {
+    // Display confirmation modal
+    if (confirm("Are you sure you want to delete this user?")) {
+      // If user confirms, redirect to deleteUser route
+      window.location.href = "/admin/deleteUser/" + userId;
+    } else {
+      // If user cancels, do nothing
+      return false;
+    }
+  }
+  function addUserModule()
+  {
+    alert("hey im")
+  }
+</script>
