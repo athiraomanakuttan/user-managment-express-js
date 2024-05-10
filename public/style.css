@@ -11,6 +11,10 @@ body{
     /* height: 90vh; */
     font-family: 'Roboto', sans-serif;
 }
+a,a:hover{
+    text-decoration: none !important;
+    color: #fff !important;
+}
 
 .form-2-wrapper {
     background: #9d00ff29;
@@ -49,4 +53,32 @@ button.login-btn{
 .error-display{
     background-color: #eb2d2de0;
     border-radius: 2px;
+}
+.center-div{
+    width: 100%;
+    height: 100vh;
+    background-color: #b300ff77;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+.logout-div{
+    background-color: rgba(255, 255, 255, 0.137);
+    text-align: center;
+    padding: 2rem;
+    color: #fff;
+}
+.nametag{
+    color: #690394;
+}
+.logout-btn{
+    background-image: linear-gradient(to right,#9931c5a6,#982ac7);
+    color: #fff;
+    padding: 0.5rem 1.3rem;
+    border: 1px solid #bfbcbc;
+    border-radius: 8px;
+    transition: all ease 0.5s;
+}
+.logout-btn:hover{
+    transform: scale(1.1);
 }

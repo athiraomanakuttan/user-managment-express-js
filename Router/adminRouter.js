@@ -1,11 +1,10 @@
-const express= require('express');
-const router = express.Router();
+const { Router } = require('express')
+const router = Router();
+const adminController = require('../Controller/adminController')
+const {adminSessionCheck , adminLoginCheck}= require('../Middleware/sessionMiddleware')
 
-router.get('/',(req,res)=>{
-    res.render('LoginPage');
-})
-router.get('/signup',(req,res)=>{
-    res.render('SignupPage')
-})
+router.get('/login',adminLoginCheck,adminController.login)
+router.post('/login',adminLoginCheck,adminController.adminLogin)
+router.get('/dashbord',adminSessionCheck,adminController.adminDashboard)
 
 module.exports = router

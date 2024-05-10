@@ -74,7 +74,13 @@ const loginUser = async (req, res) => {
 // ------------------- Load Home page ----------- 
 
 const homePage = (req, res)=>{
-    res.render("home")
+    console.log(req.userName)
+    res.render("home",{userName:req.userName})
+}
+
+const logout=(req,res)=>{
+    req.session.destroy();
+    res.redirect('/login')
 }
 
 // -----------------  Form validation ------- -----
@@ -101,4 +107,4 @@ function validateForm(data) {
   else return { valid: true };
 }
 
-module.exports = { signup, createUser, login, loginUser,homePage };
+module.exports = { signup, createUser, login, loginUser,homePage,logout };

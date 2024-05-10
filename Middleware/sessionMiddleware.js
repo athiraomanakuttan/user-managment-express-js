@@ -1,3 +1,5 @@
+
+// ------------------------ user middleware started --------------------------- 
 const collection = require('../Config/dbConnect')
 const userSessionCheck = (req,res,next)=>{
 if(req.session.user)
@@ -10,11 +12,34 @@ else{
 }
 const userLoginCheck =(req,res,next)=>{
     if(req.session.user)
+        {
             res.redirect('/home')
+        }
+            
     else
         next()
 }
 
+const userActive= async (req,res,next)=>{
+    if(req.session.user)
+    {
+        const userDetails = await collection.findOne({email:req.session.user})
+        console.log(userDetails)
+        if(userDetails)
+            {
+                console.log(userDetails.name)
+                req.userName= userDetails.name;
+                next()
+            }
+        else
+        {
+            req.session.destroy();
+            res.redirect('/login')
+        }
+    }
+}
+
+// ------------------------ admin middleware started --------------------------- 
 
 const adminSessionCheck = (req,res,next)=>{
     if(req.session.admin)
@@ -22,7 +47,7 @@ const adminSessionCheck = (req,res,next)=>{
             next();
         }
         else
-        res.redirect('/admin-login')
+        res.redirect('/admin/login')
 }
 
 const adminLoginCheck =(req,res,next)=>{
@@ -36,19 +61,7 @@ const adminLoginCheck =(req,res,next)=>{
     }
 }
 
-const userActive= (req,res,next)=>{
-    if(req.session.user)
-    {
-        const userDetails = collection.findOne({email:req.session.user})
-        if(userDetails)
-            next()
-        else
-        {
-            req.session.destroy();
-            res.redirect('/login')
-        }
-    }
-}
+
 
 
 module.exports={userSessionCheck,userLoginCheck,adminSessionCheck,adminLoginCheck,userActive}

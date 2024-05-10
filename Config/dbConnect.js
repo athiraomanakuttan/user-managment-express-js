@@ -9,6 +9,11 @@ connect.then(() => console.log("Connection success")).catch((err) => console.err
 
 const LoginSchema = new mongoose.Schema(
     {
+        name:{
+            type: String,
+            required: true,
+            unique: true
+        },
         email:{
             type: String,
             required: true,
