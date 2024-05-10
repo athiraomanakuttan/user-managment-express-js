@@ -7,5 +7,6 @@ router.get('/login',adminLoginCheck,adminController.login)
 router.post('/login',adminLoginCheck,adminController.adminLogin)
 router.get('/dashboard',adminSessionCheck,adminController.adminDashboard)
 router.get('/logout',adminController.logout)
+router.get('/deleteUser/:id',adminSessionCheck,adminController.deleteUser)
 
 module.exports = router

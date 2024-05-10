@@ -23,8 +23,8 @@ if(req.body.email === adminEmail && req.body.password === adminPassword)
 const adminDashboard= async (req,res)=>{
     try{
         const serchString = req.query.search || ''
-        const serchData = await collection.find({name :{$regex:serchString, $options: 'i'}}) 
-        res.render('adminDashboard',{data : serchData})
+        const serchData = await collection.find({name :{$regex:serchString, $options: 'i'}}).sort({created_time:-1}) 
+        res.render('adminDashboard',{data : serchData,serchString })
     }
     catch(error)
     {
@@ -34,8 +34,11 @@ const adminDashboard= async (req,res)=>{
 const logout =(req,res)=>{
     req.session.destroy();
     res.redirect('/admin/login')
-
-
 }
 
-module.exports= { login, adminLogin, adminDashboard ,logout}
+// ---------------------- User delete ----------------- 
+const deleteUser =(req,res)=>{
+    console.log(req.params.id)
+}
+
+module.exports= { login, adminLogin, adminDashboard ,logout,deleteUser}

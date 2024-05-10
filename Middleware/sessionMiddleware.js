@@ -42,7 +42,7 @@ const userActive= async (req,res,next)=>{
 // ------------------------ admin middleware started --------------------------- 
 
 const adminSessionCheck = (req,res,next)=>{
-    console.log("inside the midware");
+    console.log("admin session active");
     if(req.session.admin)
         {
             next();
