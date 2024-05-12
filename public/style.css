@@ -112,3 +112,15 @@ button.login-btn{
     justify-content: center;
     justify-content: space-between;
 }
+.form-div{
+    width: 40%;
+    margin: auto !important;
+    border: 1px solid hsl(0, 0%, 100%);
+    margin-top: 5rem !important;
+    color: #fff !important;
+        
+}
+.form-div input {
+    border-radius: 2px !important;
+    border-color: #fff;
+}

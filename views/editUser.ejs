@@ -1,0 +1,36 @@
+<%- include('header') %>
+<div class="dashbord">
+    <%- include('adminHeader') %>
+    
+    <div class="form-div">
+        <form action="/admin/updateUser/<%= data._id%>" method="post">
+            <div class="modal-body">
+                <% if(error){%>
+                    <div class="error-display">
+                        <p class="p-2 text-center"><%= error%></p>
+                    </div>
+                <% } %>
+              <div class="form-group">
+                <label for="">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<%= data.name%>" required>
+              </div>
+              <div class="form-group">
+                <label for="email1">Email address</label>
+                <input type="email" class="form-control" id="email1" name="email" aria-describedby="emailHelp" value="<%= data.email%>" placeholder="Enter email" required >
+              </div>
+
+              <div class="form-group">
+                <label for="password1">Joined date</label>
+                <input type="text" class="form-control" id="text"   name="created_time" value="<%= data.created_time %>"  required readonly>
+              </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <input type="submit" class="btn btn-success" value="submit">
+            </div>
+          </form>
+    </div>
+</div>
+
+<%- include('scripts') %>
