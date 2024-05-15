@@ -8,7 +8,7 @@ router.post('/login',adminLoginCheck,adminController.adminLogin)
 router.get('/dashboard',adminSessionCheck,adminController.adminDashboard)
 router.get('/logout',adminController.logout)
 router.get('/deleteUser/:id',adminSessionCheck,adminController.deleteUser)
-router.post('/addUser',adminSessionCheck,adminController.addUser)
+router.get('/addUser',adminSessionCheck,adminController.addUser)
 router.get('/editUser/:id',adminSessionCheck,adminController.editUser)
 router.post('/updateUser/:id', adminSessionCheck,adminController.updateUser)
 
