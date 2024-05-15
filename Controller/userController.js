@@ -56,19 +56,21 @@ const loginUser = async (req, res) => {
     password: req.body.password,
   };
   let existingUser = await collection.findOne({ email: data.email });
-  console.log(existingUser.password);
-  console.log(data.password);
-  const passwordCheck = await bcrypt.compare(
-    data.password,
-    existingUser.password
-  );
-  if (existingUser && passwordCheck) {
-    // create session
-    req.session.user=existingUser.email;
-    res.redirect('/home')
-  } else if (!passwordCheck)
-    res.render("LoginPage", { error: "Incorrect Password" });
+  if(existingUser){
+    const passwordCheck = await bcrypt.compare(
+      data.password,
+      existingUser.password
+    );
+    if (existingUser && passwordCheck) {
+      // create session
+      req.session.user=existingUser.email;
+      res.redirect('/home')
+    } else if (!passwordCheck)
+      res.render("LoginPage", { error: "Incorrect Password" });
+    else res.render("LoginPage", { error: "User Not Exist." });
+  }
   else res.render("LoginPage", { error: "User Not Exist." });
+  
 };
 
 // ------------------- Load Home page ----------- 
